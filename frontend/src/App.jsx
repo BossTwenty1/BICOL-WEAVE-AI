@@ -12,32 +12,51 @@ import ResearchResults from './components/ResearchResults'
 
 function App() {
   const revealRef = useScrollReveal()
-  const [backendStatus, setBackendStatus] = useState('checking')
+  const [backendStatus, setBackendStatus] = useState('starting')
 
   useEffect(() => {
     let isMounted = true
+    let healthTimer
+    let consecutiveFailures = 0
+
+    const maxHealthFailures = 3
+    const retryDelay = 5000
+    const healthyCheckInterval = 30000
 
     const checkBackend = async () => {
       try {
         const health = await getHealth()
-        if (isMounted) {
-          setBackendStatus(
-            health.status === 'ok' && health.model_loaded ? 'online' : 'offline',
-          )
+        const isHealthy = health.status === 'ok' && health.model_loaded
+
+        if (!isMounted) return
+
+        if (isHealthy) {
+          consecutiveFailures = 0
+          setBackendStatus('online')
+          healthTimer = window.setTimeout(checkBackend, healthyCheckInterval)
+        } else {
+          consecutiveFailures += 1
+          if (consecutiveFailures >= maxHealthFailures) {
+            setBackendStatus('offline')
+          }
+          healthTimer = window.setTimeout(checkBackend, retryDelay)
         }
       } catch {
-        if (isMounted) {
+        if (!isMounted) return
+
+        consecutiveFailures += 1
+        if (consecutiveFailures >= maxHealthFailures) {
           setBackendStatus('offline')
         }
+        healthTimer = window.setTimeout(checkBackend, retryDelay)
       }
     }
 
     checkBackend()
-    const retryTimer = window.setInterval(checkBackend, 10000)
 
     return () => {
       isMounted = false
-      window.clearInterval(retryTimer)
+      window.clearTimeout(healthTimer)
     }
   }, [])
 
@@ -46,7 +65,10 @@ function App() {
       <Navbar />
       <main ref={revealRef}>
         <Hero />
-        <Classifier backendStatus={backendStatus} />
+        <Classifier
+          backendStatus={backendStatus}
+          onBackendStatusChange={setBackendStatus}
+        />
         <HowItWorks />
         <PatternClasses />
         <ResearchResults />

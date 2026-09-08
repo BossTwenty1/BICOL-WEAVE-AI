@@ -11,7 +11,7 @@ function isSupportedFile(file) {
   return ACCEPTED_MIME_TYPES.includes(file.type) || ACCEPTED_EXTENSIONS.includes(extension)
 }
 
-function Classifier({ backendStatus }) {
+function Classifier({ backendStatus, onBackendStatusChange }) {
   const inputRef = useRef(null)
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
@@ -71,11 +71,16 @@ function Classifier({ backendStatus }) {
     try {
       const prediction = await predictImage(selectedFile)
       setResult(prediction)
+      onBackendStatusChange?.('online')
     } catch (requestError) {
       if (requestError?.status) {
         setError(requestError.message)
       } else {
-        setError('The AI service is temporarily unavailable. Please wait a moment and try again.')
+        setError('The classifier could not be reached yet. Please try again shortly.')
+      }
+
+      if (!requestError?.status || requestError.status >= 500) {
+        onBackendStatusChange?.('offline')
       }
     } finally {
       setIsAnalyzing(false)
@@ -84,9 +89,9 @@ function Classifier({ backendStatus }) {
 
   const statusLabel =
     backendStatus === 'online'
-      ? 'AI service ready'
-      : backendStatus === 'checking'
-        ? 'Connecting to AI service...'
+      ? 'AI Model Online'
+      : backendStatus === 'starting'
+        ? 'AI service is starting...'
         : 'AI service unavailable'
 
   return (
@@ -160,7 +165,7 @@ function Classifier({ backendStatus }) {
                 <AlertCircle size={17} />
                 <div>
                   <strong>{error}</strong>
-                  {backendStatus === 'offline' && <small>The service may be waking up. Please try again shortly.</small>}
+                  {backendStatus === 'offline' && <small>The connection will retry automatically.</small>}
                 </div>
               </div>
             )}

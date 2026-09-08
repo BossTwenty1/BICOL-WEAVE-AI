@@ -1,4 +1,5 @@
 import { ArrowRight, BrainCircuit, Leaf, ScanLine } from 'lucide-react'
+import ShapeGrid from './ShapeGrid'
 
 function Hero() {
   return (
@@ -35,14 +36,19 @@ function Hero() {
         <div className="hero-visual" aria-label="Abstract woven pattern visualization">
           <div className="visual-orbit orbit-one" />
           <div className="visual-orbit orbit-two" />
+          <ShapeGrid
+            className="hero-shape-grid"
+            speed={0.5}
+            squareSize={40}
+            direction="diagonal"
+            borderColor="#fff"
+            hoverFillColor="#222"
+            shape="square"
+            hoverTrailAmount={5}
+          />
           <div className="visual-topline">
             <span><span className="live-dot" /> MODEL OVERVIEW</span>
             <span>224 × 224 RGB</span>
-          </div>
-          <div className="woven-grid" aria-hidden="true">
-            {Array.from({ length: 36 }, (_, index) => (
-              <span key={index} />
-            ))}
           </div>
           <div className="visual-center-mark">
             <ScanLine size={28} />

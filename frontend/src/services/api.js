@@ -10,12 +10,21 @@ async function parseError(response) {
   }
 }
 
-export async function getHealth() {
-  const response = await fetch(`${API_BASE_URL}/health`)
-  if (!response.ok) {
-    throw new Error(await parseError(response))
+export async function getHealth(timeoutMs = 60000) {
+  const controller = new AbortController()
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs)
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/health`, {
+      signal: controller.signal,
+    })
+    if (!response.ok) {
+      throw new Error(await parseError(response))
+    }
+    return response.json()
+  } finally {
+    window.clearTimeout(timeoutId)
   }
-  return response.json()
 }
 
 export async function predictImage(file) {

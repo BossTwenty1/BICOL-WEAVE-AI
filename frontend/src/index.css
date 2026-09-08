@@ -96,6 +96,7 @@ button:disabled { cursor: not-allowed; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; margin-top: 31px; }
 .model-badge { width: fit-content; margin-top: 22px; padding: 8px 11px; display: flex; align-items: center; gap: 8px; border: 1px solid #d5ded2; border-radius: 3px; color: var(--leaf); background: rgba(255, 253, 248, 0.6); font-size: 0.72rem; font-weight: 800; }
 .hero-visual { position: relative; min-height: 500px; overflow: hidden; padding: 24px; border: 1px solid rgba(30, 85, 69, 0.18); border-radius: 3px; background: #dbe7d7; box-shadow: var(--shadow); }
+.hero-shape-grid { position: absolute; inset: 0; z-index: 0; opacity: 0.42; }
 .hero-visual::before { content: ""; position: absolute; inset: 13px; border: 1px solid rgba(30, 85, 69, 0.15); pointer-events: none; }
 .visual-topline { position: relative; z-index: 2; display: flex; justify-content: space-between; color: var(--leaf); font-size: 0.62rem; font-weight: 900; letter-spacing: 0.14em; }
 .visual-topline span:first-child { display: flex; align-items: center; gap: 6px; }
