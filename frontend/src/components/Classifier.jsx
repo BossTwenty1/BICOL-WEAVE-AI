@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AlertCircle, CheckCircle2, FileImage, LoaderCircle, UploadCloud } from 'lucide-react'
-import { API_BASE_URL, predictImage } from '../services/api'
+import { predictImage } from '../services/api'
 import PredictionResult from './PredictionResult'
 
 const ACCEPTED_MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
@@ -71,8 +71,12 @@ function Classifier({ backendStatus }) {
     try {
       const prediction = await predictImage(selectedFile)
       setResult(prediction)
-    } catch {
-      setError('Unable to analyze the image. Please make sure the AI backend is running and try again.')
+    } catch (requestError) {
+      if (requestError?.status) {
+        setError(requestError.message)
+      } else {
+        setError('The AI service is temporarily unavailable. Please wait a moment and try again.')
+      }
     } finally {
       setIsAnalyzing(false)
     }
@@ -80,10 +84,10 @@ function Classifier({ backendStatus }) {
 
   const statusLabel =
     backendStatus === 'online'
-      ? 'AI Model Online'
+      ? 'AI service ready'
       : backendStatus === 'checking'
-        ? 'AI service is starting...'
-        : 'AI Backend Offline'
+        ? 'Connecting to AI service...'
+        : 'AI service unavailable'
 
   return (
     <section className="section-block classifier-section" id="classifier">
@@ -156,7 +160,7 @@ function Classifier({ backendStatus }) {
                 <AlertCircle size={17} />
                 <div>
                   <strong>{error}</strong>
-                  {backendStatus === 'offline' && <small>Backend expected at {API_BASE_URL}</small>}
+                  {backendStatus === 'offline' && <small>The service may be waking up. Please try again shortly.</small>}
                 </div>
               </div>
             )}

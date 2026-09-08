@@ -70,6 +70,6 @@ Reduced-motion preferences disable animation and smooth scrolling, including
 when the preference changes while the page is open. Animations do not delay requests.
 
 Verification for this polish pass: production build passed; browser layout checked
-at 375, 768, 1366, 1440, and 1920px widths; backend status displayed “AI Model
-Online”; invalid-file handling and mobile menu navigation passed. A real image
+at 375, 768, 1366, 1440, and 1920px widths; backend status displayed “AI service
+ready”; invalid-file handling and mobile menu navigation passed. A real image
 was not available in the project for repeating the full prediction test.

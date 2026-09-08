@@ -36,7 +36,7 @@ function Hero() {
           <div className="visual-orbit orbit-one" />
           <div className="visual-orbit orbit-two" />
           <div className="visual-topline">
-            <span><span className="live-dot" /> MODEL READY</span>
+            <span><span className="live-dot" /> MODEL OVERVIEW</span>
             <span>224 × 224 RGB</span>
           </div>
           <div className="woven-grid" aria-hidden="true">

@@ -17,22 +17,27 @@ function App() {
   useEffect(() => {
     let isMounted = true
 
-    getHealth()
-      .then((health) => {
+    const checkBackend = async () => {
+      try {
+        const health = await getHealth()
         if (isMounted) {
           setBackendStatus(
             health.status === 'ok' && health.model_loaded ? 'online' : 'offline',
           )
         }
-      })
-      .catch(() => {
+      } catch {
         if (isMounted) {
           setBackendStatus('offline')
         }
-      })
+      }
+    }
+
+    checkBackend()
+    const retryTimer = window.setInterval(checkBackend, 10000)
 
     return () => {
       isMounted = false
+      window.clearInterval(retryTimer)
     }
   }, [])
 

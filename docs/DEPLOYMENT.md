@@ -66,11 +66,11 @@ Do not include a trailing slash in the backend URL. The frontend reads this valu
 
 After both services deploy, open the Vercel URL and confirm:
 
-- the classifier status changes to `AI Model Online` after the Render service wakes;
+- the classifier status changes to `AI service ready` after the Render service wakes;
 - the frontend can load the backend health endpoint;
 - `/model-info` is reachable through the Render URL;
 - a real JPG, JPEG, PNG, or WEBP image returns a prediction;
 - prediction values, class code, probabilities, and inference time are shown from the backend response;
 - the browser console has no CORS or network errors.
 
-Render cold starts can make the first health request take longer. The frontend shows `AI service is starting...` while the initial health request is pending and does not fabricate a result if the backend fails.
+Render cold starts can make the first health request take longer. The frontend shows `Connecting to AI service...` while checking, retries the health request every 10 seconds, and does not fabricate a result if the backend fails.
