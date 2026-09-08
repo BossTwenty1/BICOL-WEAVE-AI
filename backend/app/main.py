@@ -9,13 +9,14 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 
+from .config import get_cors_origins
 from .model import model_service
 
 
 app = FastAPI(title="Bicol Weave AI API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=get_cors_origins(),
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],

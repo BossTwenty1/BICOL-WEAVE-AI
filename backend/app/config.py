@@ -1,6 +1,7 @@
 """Application and model configuration constants."""
 
 from pathlib import Path
+import os
 from typing import Dict, List
 
 
@@ -15,3 +16,19 @@ CLASS_CODES: Dict[str, str] = {
     "complex": "S3",
 }
 IMAGE_SIZE: int = 224
+DEFAULT_CORS_ORIGINS: List[str] = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+
+def get_cors_origins() -> List[str]:
+    """Return local defaults plus comma-separated production origins."""
+    configured_origins = [
+        origin.strip()
+        for origin in os.getenv("CORS_ORIGINS", "").split(",")
+        if origin.strip()
+    ]
+    if "*" in configured_origins:
+        raise ValueError("CORS_ORIGINS must contain explicit origins, not '*'.")
+    return list(dict.fromkeys(DEFAULT_CORS_ORIGINS + configured_origins))

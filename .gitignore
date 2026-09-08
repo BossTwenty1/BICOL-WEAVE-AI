@@ -9,6 +9,7 @@ venv/
 
 # ML and data
 *.pth
+!backend/models/mobilenet_v2_best.pth
 *.pt
 *.onnx
 *.pkl

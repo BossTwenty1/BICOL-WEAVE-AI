@@ -33,18 +33,13 @@ The MobileNetV2 notebook was executed in Google Colab, producing real evaluation
 
 Both the backend and frontend servers must be running for the live classifier demonstration.
 
-## Phase 2 — Backend
+## Phase 4 — Integration and Deployment — prepared
 
-Implement image validation and preprocessing, load the selected PyTorch model, and add the `/model-info` and `/predict` endpoints.
+- Connect the deployed Vercel frontend to the deployed Render backend using `VITE_API_BASE_URL`.
+- Configure Render `CORS_ORIGINS` with the exact Vercel origin.
+- Verify public health, model metadata, and end-to-end prediction with a real image.
+- Follow [docs/DEPLOYMENT.md](DEPLOYMENT.md) for the deployment order.
 
-## Phase 3 — Frontend
+## Phase 5 — Presentation Readiness — pending public deployment
 
-Create the React, Vite, and Tailwind CSS interface for image upload and prediction-result display.
-
-## Phase 4 — Integration
-
-Connect the frontend to the FastAPI backend and verify end-to-end inference with representative images.
-
-## Phase 5 — Presentation Readiness
-
-Polish the user experience, document the final workflow, verify deployment behavior, and prepare a clear demonstration without fabricating research results.
+Verify deployment behavior, confirm the public frontend opens without local services, and prepare a clear demonstration without fabricating research results.

@@ -23,7 +23,8 @@ The checkpoint must be available at:
 backend/models/mobilenet_v2_best.pth
 ```
 
-It is ignored by Git and must never be committed.
+The presentation deployment explicitly tracks this checkpoint. Other model
+weight formats and checkpoints remain ignored by Git.
 
 ## Run locally
 
@@ -34,6 +35,17 @@ python -m uvicorn app.main:app --reload
 ```
 
 The API is available at `http://127.0.0.1:8000`. Interactive documentation is available at `http://127.0.0.1:8000/docs`.
+
+For Render, use the `backend` directory as the root directory and run the
+CPU-only deployment with:
+
+```text
+Build: pip install --upgrade pip && pip install --index-url https://download.pytorch.org/whl/cpu torch torchvision && pip install -r requirements.txt
+Start: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Set `CORS_ORIGINS` to the deployed Vercel origin, for example
+`https://YOUR_VERCEL_DOMAIN`. Local origins remain enabled automatically.
 
 ## Endpoints
 

@@ -82,7 +82,7 @@ function Classifier({ backendStatus }) {
     backendStatus === 'online'
       ? 'AI Model Online'
       : backendStatus === 'checking'
-        ? 'Checking AI Backend'
+        ? 'AI service is starting...'
         : 'AI Backend Offline'
 
   return (
